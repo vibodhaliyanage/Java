@@ -8,11 +8,13 @@ import hibernate.Brand;
 import hibernate.HibernateUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -20,8 +22,8 @@ import org.hibernate.SessionFactory;
  *
  * @author vibod
  */
-@WebServlet(name = "DataInsert", urlPatterns = {"/DataInsert"})
-public class DataInsert extends HttpServlet {
+@WebServlet(name = "DataSearch2", urlPatterns = {"/DataSearch2"})
+public class DataSearch2 extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,13 +31,13 @@ public class DataInsert extends HttpServlet {
 
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session s = sf.openSession();
-        
-        Brand b = new Brand();
-        b.setId(5);
-        b.setName("Google");
-        
-        s.save(b);
-        s.beginTransaction().commit();
+
+        Criteria c = s.createCriteria(Brand.class);       //SELECT * FROM `brand`;  
+        List<Brand> brands = c.list();
+       
+        for (Brand brand : brands) {
+            System.out.println(brand.getName());
+        }
 
     }
 
